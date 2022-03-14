@@ -1,9 +1,9 @@
 return require('packer').startup(function()
--- Packer
+  -- Packer
   use 'wbthomason/packer.nvim'
 
- --  use 'lewis6991/impatient.nvim'
-   use 'nathom/filetype.nvim'
+  --  use 'lewis6991/impatient.nvim'
+  use 'nathom/filetype.nvim'
 
   -- Async building & commands
   use { 'tpope/vim-dispatch', cmd = { 'Dispatch', 'Make', 'Focus', 'Start' } }
@@ -21,9 +21,9 @@ return require('packer').startup(function()
   use 'kevinhwang91/nvim-bqf'
 
   -- Indentation tracking
-  use 'lukas-reineke/indent-blankline.nvim'
+  -- use 'lukas-reineke/indent-blankline.nvim'
 
-  use "lukas-reineke/lsp-format.nvim"
+   -- use "lukas-reineke/lsp-format.nvim"
 
   -- Wrapping/delimiters
   use {
@@ -44,10 +44,10 @@ return require('packer').startup(function()
   use 'p00f/clangd_extensions.nvim'
 
   use {
-	  'windwp/nvim-autopairs',
-	  config = function()
-		  require('nvim-autopairs').setup() 
-	  end,
+    'windwp/nvim-autopairs',
+    config = function()
+      require('nvim-autopairs').setup()
+    end,
   }
 
   -- Search
@@ -99,36 +99,54 @@ return require('packer').startup(function()
       'RRethy/nvim-treesitter-textsubjects',
     },
     run = ':TSUpdate',
-    config = [[require('treesitter_config')]] 
+    config = [[require('treesitter_config')]]
   }
 
   -- Pretty symbols
   use 'kyazdani42/nvim-web-devicons'
 
   use {
-	  "rafamadriz/friendly-snippets",
-	  requires = {
-		'L3MON4D3/LuaSnip',
-	  }
+    "rafamadriz/friendly-snippets",
+    requires = {
+      'L3MON4D3/LuaSnip',
+    }
   }
 
   -- Completion
-   use {
-     'hrsh7th/nvim-cmp',
-     requires = {
-       'L3MON4D3/LuaSnip',
-       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
-       'hrsh7th/cmp-nvim-lsp',
-       {'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp'},
-       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
-       { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
-       { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
-       'lukas-reineke/cmp-under-comparator',
-       { 'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp' },
-     },
-     config = [[require('comp_config')]],
-     setup = [[require('lsp_setup')]],
-     event = 'InsertEnter *',
+  use {
+    'hrsh7th/nvim-cmp',
+    requires = {
+      'L3MON4D3/LuaSnip',
+      { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+      'hrsh7th/cmp-nvim-lsp',
+      {'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp'},
+      { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
+      { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
+      'lukas-reineke/cmp-under-comparator',
+      { 'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp' },
+    },
+    config = [[require('cmp_config')]],
+    setup = [[require('lsp_setup')]],
+    event = 'InsertEnter *',
+  }
+
+
+  -- Undo tree
+  use {
+    'mbbill/undotree',
+    cmd = 'UndotreeToggle',
+    config = [[vim.g.undotree_SetFocusWhenToggle = 1]],
+  }
+  -- Git
+  use {
+    { 'tpope/vim-fugitive', cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull' }, disable = true },
+    {
+      'lewis6991/gitsigns.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+      config = [[require('gitsigns_config')]],
+    },
+    { 'TimUntersberger/neogit', cmd = 'Neogit', config = [[require('neogit_config')]] },
   }
 
   -- Debugger
@@ -163,17 +181,17 @@ return require('packer').startup(function()
     -- event = 'User ActuallyEditing',
   }
 
---   use { 
--- 	  'ray-x/go.nvim',
--- 	  requires = {
--- 		  'mfussenegger/nvim-dap',
--- 		  'rcarriga/nvim-dap-ui',
--- 		  'theHamsta/nvim-dap-virtual-text',
--- 		  'ray-x/guihua.lua'
--- 	  },
--- 	  config = [[require('go_setup')]],
---   }
+  use {
+    'ray-x/go.nvim',
+    requires = {
+      'mfussenegger/nvim-dap',
+      'rcarriga/nvim-dap-ui',
+      'theHamsta/nvim-dap-virtual-text',
+      'ray-x/guihua.lua'
+    },
+    config = [[require('go_setup')]],
+  }
 
-  use { 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' } }
+  -- use { 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' } }
 
 end)

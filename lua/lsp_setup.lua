@@ -1,7 +1,7 @@
 local lspconfig = require 'lspconfig'
 local trouble = require 'trouble'
 local lsp_status = require 'lsp-status'
-local null_ls = require 'null-ls'
+-- local null_ls = require 'null-ls'
 
 require('clangd_extensions.config').setup {
   extensions = { inlay_hints = { only_current_line = true, show_variable_name = true } },
@@ -90,12 +90,12 @@ local function on_attach(client)
 
   if client.resolved_capabilities.document_formatting then
     buf_keymap(0, 'n', '<leader>p', '<cmd>lua vim.lsp.buf.formatting()<cr>', keymap_opts)
-      vim.cmd([[
-            augroup LspFormatting
-                autocmd! * <buffer>
-                autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-            augroup END
-      ]])
+    vim.cmd([[
+    augroup LspFormatting
+    autocmd! * <buffer>
+    autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+    augroup END
+    ]])
   end
 
   cmd 'augroup lsp_aucmds'
@@ -105,7 +105,7 @@ local function on_attach(client)
   end
 
   cmd 'au CursorHold,CursorHoldI <buffer> lua require"nvim-lightbulb".update_lightbulb {sign = {enabled = false}, virtual_text = {enabled = true, text = ""}, float = {enabled = false, text = "", win_opts = {winblend = 100, anchor = "NE"}}}'
-   cmd 'au CursorHold,CursorHoldI <buffer> lua vim.diagnostic.open_float(0, { scope = "line" })'
+  cmd 'au CursorHold,CursorHoldI <buffer> lua vim.diagnostic.open_float(0, { scope = "line" })'
   cmd 'augroup END'
 end
 
@@ -162,7 +162,7 @@ local servers = {
   -- end,
   sumneko_lua = {
     cmd = { sumneko_binary_path, "-E", "/usr/lib/lua-language-server/bin/main.lua"},
-    on_attach = require "lsp-format".on_attach,
+ --   on_attach = require "lsp-format".on_attach,
     settings = {
       Lua = {
         diagnostics = { globals = { 'vim' } },
@@ -170,7 +170,7 @@ local servers = {
         workspace = {
           library = {
             [vim.fn.expand '$VIMRUNTIME/lua'] = true,
-        --    [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
+            --    [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
           },
         },
       },
@@ -205,159 +205,164 @@ local servers = {
   tsserver = {},
   vimls = {},
   gopls = {
-   on_attach = on_attach,
-   prefer_null_ls= true,
-   capabilities = {
-    textDocument = {
-      completion = {
-        completionItem = {
-          commitCharactersSupport = true,
-          deprecatedSupport = true,
-          documentationFormat = { "markdown", "plaintext" },
-          preselectSupport = true,
-          insertReplaceSupport = true,
-          labelDetailsSupport = true,
-          snippetSupport = true,
-          resolveSupport = {
-            properties = {
-              "documentation",
-              "details",
-              "additionalTextEdits",
+    capabilities = {
+      textDocument = {
+        completion = {
+          completionItem = {
+            commitCharactersSupport = true,
+            deprecatedSupport = true,
+            documentationFormat = { "markdown", "plaintext" },
+            preselectSupport = true,
+            insertReplaceSupport = true,
+            labelDetailsSupport = true,
+            snippetSupport = true,
+            resolveSupport = {
+              properties = {
+                "documentation",
+                "details",
+                "additionalTextEdits",
+              },
             },
           },
+          contextSupport = true,
+          dynamicRegistration = true,
         },
-        contextSupport = true,
-        dynamicRegistration = true,
       },
     },
-  },
-  filetypes = { "go", "gomod", "gohtmltmpl", "gotexttmpl" },
-  message_level = vim.lsp.protocol.MessageType.Error,
-  cmd = {
-    "gopls", -- share the gopls instance if there is one already
-    "-remote.debug=:0",
-  },
-  root_dir = function(fname)
-    local has_lsp, lspconfig = pcall(require, "lspconfig")
-    if has_lsp then
-      local util = lspconfig.util
-      return util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
-    end
-  end,
-  flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
-  settings = {
-    gopls = {
-      -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-      -- flags = {allow_incremental_sync = true, debounce_text_changes = 500},
-      -- not supported
-      analyses = { unusedparams = true, unreachable = false, shadow = true },
-      codelenses = {
-        generate = true, -- show the `go generate` lens.
-        gc_details = true, --  // Show a code lens toggling the display of gc's choices.
-        test = true,
-        tidy = true,
-      },
-      usePlaceholders = true,
-      experimentalPostfixCompletions = true,
-      experimentalUseInvalidMetadata = true,
-      hoverKind = "Structured",
-      completeUnimported = true,
-      staticcheck = true,
-      matcher = "Fuzzy",
-      diagnosticsDelay = "500ms",
-      experimentalWatchedFileDelay = "100ms",
-      symbolMatcher = "fuzzy",
-      ["local"] = "",
-      gofumpt = false, -- true, -- turn on for new repos, gofmpt is good but also create code turmoils
-      buildFlags = { "-tags", "integration" },
-      -- buildFlags = {"-tags", "functional"}
+    filetypes = { "go", "gomod", "gohtmltmpl", "gotexttmpl" },
+    message_level = vim.lsp.protocol.MessageType.Error,
+    cmd = {
+      "gopls", -- share the gopls instance if there is one already
+      "-remote.debug=:0",
     },
-  },
-}}
-
-local client_capabilities = vim.lsp.protocol.make_client_capabilities()
-client_capabilities.textDocument.completion.completionItem.snippetSupport = true
-client_capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = { 'documentation', 'detail', 'additionalTextEdits' },
-}
-client_capabilities = require('cmp_nvim_lsp').update_capabilities(client_capabilities)
-client_capabilities.offsetEncoding = { 'utf-16' }
-
-for server, config in pairs(servers) do
-  if type(config) == 'function' then
-    config = config()
-  end
-
-  if config.prefer_null_ls then
-    if config.on_attach then
-      local old_on_attach = config.on_attach
-      config.on_attach = function(client, bufnr)
-        old_on_attach(client, bufnr)
-        prefer_null_ls_fmt(client)
+    root_dir = function(fname)
+      local has_lsp, lspconfig = pcall(require, "lspconfig")
+      if has_lsp then
+        local util = lspconfig.util
+        return util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
       end
-    else
-      config.on_attach = config.on_attach and prefer_null_ls_fmt
+    end,
+    flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
+    settings = {
+      gopls = {
+        -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+        -- flags = {allow_incremental_sync = true, debounce_text_changes = 500},
+        -- not supported
+        analyses = { unusedparams = true, unreachable = false, shadow = true },
+        codelenses = {
+          generate = true, -- show the `go generate` lens.
+          gc_details = true, --  // Show a code lens toggling the display of gc's choices.
+          test = true,
+          tidy = true,
+        },
+        usePlaceholders = true,
+        experimentalPostfixCompletions = true,
+        experimentalUseInvalidMetadata = true,
+        hoverKind = "Structured",
+        completeUnimported = true,
+        staticcheck = true,
+        matcher = "Fuzzy",
+        diagnosticsDelay = "500ms",
+        experimentalWatchedFileDelay = "100ms",
+        symbolMatcher = "fuzzy",
+        ["local"] = "",
+        gofumpt = false, -- true, -- turn on for new repos, gofmpt is good but also create code turmoils
+        buildFlags = { "-tags", "integration" },
+        -- buildFlags = {"-tags", "functional"}
+      },
+    },
+  }}
+
+  local client_capabilities = vim.lsp.protocol.make_client_capabilities()
+  client_capabilities.textDocument.completion.completionItem.snippetSupport = true
+  client_capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = { 'documentation', 'detail', 'additionalTextEdits' },
+  }
+  client_capabilities = require('cmp_nvim_lsp').update_capabilities(client_capabilities)
+  client_capabilities.offsetEncoding = { 'utf-16' }
+
+  for server, config in pairs(servers) do
+    if type(config) == 'function' then
+      config = config()
     end
-  else
+
+    --     if config.prefer_null_ls then
+    --       if config.on_attach then
+    --         local old_on_attach = config.on_attach
+    --         config.on_attach = function(client, bufnr)
+    --           old_on_attach(client, bufnr)
+    --           prefer_null_ls_fmt(client)
+    --         end
+    --       else
+    --         config.on_attach = config.on_attach and prefer_null_ls_fmt
+    --       end
+    --     else
+    --       if config.on_attach then
+    --         local old_on_attach = config.on_attach
+    --         config.on_attach = function(client, bufnr)
+    --           old_on_attach(client, bufnr)
+    --           prefer_null_ls_fmt(client)
+    --         end
+    --       else
+    --         config.on_attach = on_attach
+    --       end
+    --     end
     if config.on_attach then
       local old_on_attach = config.on_attach
       config.on_attach = function(client, bufnr)
         old_on_attach(client, bufnr)
-        prefer_null_ls_fmt(client)
+        on_attach(client)
       end
     else
       config.on_attach = on_attach
     end
-  end
 
-  config.capabilities = vim.tbl_deep_extend(
+    config.capabilities = vim.tbl_deep_extend(
     'keep',
     config.capabilities or {},
     client_capabilities,
     lsp_status.capabilities
-  )
+    )
 
-  print('capabilities', config.capabilities)
-
-  for index, data in ipairs(config.capabilities) do
-    print(index)
-    for key, value in pairs(data) do
-      print('\t', key, value)
+    for index, data in ipairs(config.capabilities) do
+      print(index)
+      for key, value in pairs(data) do
+        print('\t', key, value)
+      end
     end
+
+    lspconfig[server].setup(config)
   end
 
-  lspconfig[server].setup(config)
-end
-
--- null-ls setup
-local null_fmt = null_ls.builtins.formatting
-local null_diag = null_ls.builtins.diagnostics
- null_ls.setup {
-  sources = {
-    -- null_diag.chktex,
-    -- null_diag.cppcheck,
-    -- null_diag.proselint,
-    -- null_diag.pylint,
-    -- null_diag.selene,
-    -- null_diag.shellcheck,
-    -- null_diag.teal,
-    null_diag.golangci_lint,
-    -- null_diag.vale,
-    -- null_diag.vint,
-    null_diag.write_good.with { filetypes = { 'markdown', 'tex' } },
-    null_fmt.clang_format,
-    null_fmt.cmake_format,
-    null_fmt.isort,
-    null_fmt.prettier,
-    null_fmt.rustfmt,
-    null_fmt.shfmt,
-    null_fmt.stylua,
-    null_fmt.trim_whitespace,
-    null_fmt.yapf,
-    null_fmt.gofumpt,
-    null_fmt.goimports,
-    null_fmt.golines,
-    -- null_fmt.black
-  },
-  on_attach = on_attach,
-} 
+  -- null-ls setup
+  --   local null_fmt = null_ls.builtins.formatting
+  --   local null_diag = null_ls.builtins.diagnostics
+  --   null_ls.setup {
+  --     sources = {
+  --       -- null_diag.chktex,
+  --       -- null_diag.cppcheck,
+  --       -- null_diag.proselint,
+  --       -- null_diag.pylint,
+  --       -- null_diag.selene,
+  --       -- null_diag.shellcheck,
+  --       -- null_diag.teal,
+  --       null_diag.golangci_lint,
+  --       -- null_diag.vale,
+  --       -- null_diag.vint,
+  --       null_diag.write_good.with { filetypes = { 'markdown', 'tex' } },
+  --       null_fmt.clang_format,
+  --       null_fmt.cmake_format,
+  --       null_fmt.isort,
+  --       null_fmt.prettier,
+  --       null_fmt.rustfmt,
+  --       null_fmt.shfmt,
+  --       null_fmt.stylua,
+  --       null_fmt.trim_whitespace,
+  --       null_fmt.yapf,
+  --       null_fmt.gofumpt,
+  --       null_fmt.goimports,
+  --       null_fmt.golines,
+  --       -- null_fmt.black
+  --     },
+  --     on_attach = on_attach,
+  --   }

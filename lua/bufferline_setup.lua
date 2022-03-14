@@ -49,7 +49,7 @@ bufferline.setup {
       end
       return s
     end,
-    separator_style = 'thin',
+    separator_style = "thick",
   },
   highlights = {
     background = colors.elem_inactive,
