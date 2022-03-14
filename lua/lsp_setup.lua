@@ -110,9 +110,9 @@ local function on_attach(client)
 end
 
 local function prefer_null_ls_fmt(client)
-  -- client.resolved_capabilities.document_formatting = false
-  -- client.resolved_capabilities.document_range_formatting = false
-  -- on_attach(client)
+  client.resolved_capabilities.document_formatting = false
+  client.resolved_capabilities.document_range_formatting = false
+  on_attach(client)
 end
 
 local sumneko_binary_path = vim.fn.exepath('/usr/lib/lua-language-server/bin/lua-language-server')
@@ -205,7 +205,8 @@ local servers = {
   tsserver = {},
   vimls = {},
   gopls = {
-   prefer_null_ls= false,
+   on_attach = on_attach,
+   prefer_null_ls= true,
    capabilities = {
     textDocument = {
       completion = {
@@ -329,34 +330,34 @@ for server, config in pairs(servers) do
 end
 
 -- null-ls setup
--- local null_fmt = null_ls.builtins.formatting
--- local null_diag = null_ls.builtins.diagnostics
---  null_ls.setup {
---   sources = {
---     null_diag.chktex,
---     -- null_diag.cppcheck,
---     -- null_diag.proselint,
---     -- null_diag.pylint,
---     -- null_diag.selene,
---     null_diag.shellcheck,
---     null_diag.teal,
---     null_diag.golangci_lint,
---     -- null_diag.vale,
---     null_diag.vint,
---     null_diag.write_good.with { filetypes = { 'markdown', 'tex' } },
---     null_fmt.clang_format,
---     null_fmt.cmake_format,
---     null_fmt.isort,
---     null_fmt.prettier,
---     null_fmt.rustfmt,
---     null_fmt.shfmt,
---     null_fmt.stylua,
---     null_fmt.trim_whitespace,
---     null_fmt.yapf,
---     null_fmt.gofumpt,
---     null_fmt.goimports,
---     null_fmt.golines,
---     -- null_fmt.black
---   },
---   on_attach = on_attach,
--- } 
+local null_fmt = null_ls.builtins.formatting
+local null_diag = null_ls.builtins.diagnostics
+ null_ls.setup {
+  sources = {
+    -- null_diag.chktex,
+    -- null_diag.cppcheck,
+    -- null_diag.proselint,
+    -- null_diag.pylint,
+    -- null_diag.selene,
+    -- null_diag.shellcheck,
+    -- null_diag.teal,
+    null_diag.golangci_lint,
+    -- null_diag.vale,
+    -- null_diag.vint,
+    null_diag.write_good.with { filetypes = { 'markdown', 'tex' } },
+    null_fmt.clang_format,
+    null_fmt.cmake_format,
+    null_fmt.isort,
+    null_fmt.prettier,
+    null_fmt.rustfmt,
+    null_fmt.shfmt,
+    null_fmt.stylua,
+    null_fmt.trim_whitespace,
+    null_fmt.yapf,
+    null_fmt.gofumpt,
+    null_fmt.goimports,
+    null_fmt.golines,
+    -- null_fmt.black
+  },
+  on_attach = on_attach,
+} 

@@ -5,12 +5,13 @@ local bar_bg = '#1f1f1f'
 local bar_fg = '#c9c9c9'
 local elem_bg = '#2d2d2d'
 local elem_fg = '#8c8c8c'
-local selected_bg = '#444444'
-local selected_fg = '#efefef'
+local selected_bg = '#E3D213'
+local selected_fg = '#000000'
 local error_fg = '#ca241a'
 local warning_fg = '#fabd2f'
 local info_fg = '#83a5cb'
 local pick_fg = '#870000'
+local sep_selected_fg = '#ffffff'
 
 local colors = {
   bar = { guifg = bar_fg, guibg = bar_bg },
@@ -18,7 +19,7 @@ local colors = {
   elem_inactive = { guifg = elem_fg, guibg = elem_bg },
   elem_selected = { guifg = selected_fg, guibg = selected_bg },
   separator = { guifg = bar_bg, guibg = elem_bg },
-  separator_selected = { guifg = bar_bg, guibg = selected_bg },
+  separator_selected = { guifg = sep_selected_fg, guibg = selected_bg },
   error = { guifg = error_fg, guibg = elem_bg, guisp = error_fg },
   error_selected = { guifg = error_fg, guibg = selected_bg, gui = '' },
   warning = { guifg = warning_fg, guibg = elem_bg, guisp = warning_fg },
@@ -38,6 +39,7 @@ local diagnostics_signs = {
 bufferline.setup {
   options = {
     always_show_bufferline = true,
+    numbers = 'buffer_id',
     diagnostics = 'nvim_lsp',
     diagnostics_indicator = function(count, level, diagnostics_dict, context)
       local s = ' '
@@ -47,7 +49,7 @@ bufferline.setup {
       end
       return s
     end,
-    separator_style = 'slant',
+    separator_style = 'thin',
   },
   highlights = {
     background = colors.elem_inactive,
@@ -102,3 +104,10 @@ bufferline.setup {
 local opts = { silent = true, nowait = true }
 map('n', 'gb', '<cmd>BufferLinePick<cr>', opts)
 map('n', '<leader>d', '<cmd>bdelete!<cr>', opts)
+map('n', '<leader>1', '<cmd>BufferLineGoToBuffer 1<cr>', opts)
+map('n', '<leader>2', '<cmd>BufferLineGoToBuffer 2<cr>', opts)
+map('n', '<leader>3', '<cmd>BufferLineGoToBuffer 3<cr>', opts)
+map('n', '<leader>4', '<cmd>BufferLineGoToBuffer 4<cr>', opts)
+map('n', '<leader>5', '<cmd>BufferLineGoToBuffer 5<cr>', opts)
+map('n', '<leader>6', '<cmd>BufferLineGoToBuffer 6<cr>', opts)
+map('n', '<leader>7', '<cmd>BufferLineGoToBuffer 7<cr>', opts)

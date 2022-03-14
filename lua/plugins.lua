@@ -43,6 +43,13 @@ return require('packer').startup(function()
   -- C++
   use 'p00f/clangd_extensions.nvim'
 
+  use {
+	  'windwp/nvim-autopairs',
+	  config = function()
+		  require('nvim-autopairs').setup() 
+	  end,
+  }
+
   -- Search
   use {
     {
@@ -98,6 +105,13 @@ return require('packer').startup(function()
   -- Pretty symbols
   use 'kyazdani42/nvim-web-devicons'
 
+  use {
+	  "rafamadriz/friendly-snippets",
+	  requires = {
+		'L3MON4D3/LuaSnip',
+	  }
+  }
+
   -- Completion
    use {
      'hrsh7th/nvim-cmp',
@@ -112,8 +126,8 @@ return require('packer').startup(function()
        'lukas-reineke/cmp-under-comparator',
        { 'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp' },
      },
-     config = [[require('compl')]],
-     setup = [[require('lsp')]],
+     config = [[require('comp_config')]],
+     setup = [[require('lsp_setup')]],
      event = 'InsertEnter *',
   }
 
