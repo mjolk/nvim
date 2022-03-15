@@ -2,7 +2,7 @@ local ts_configs = require 'nvim-treesitter.configs'
 ts_configs.setup {
   ensure_installed = 'maintained',
   highlight = { enable = true, use_languagetree = true },
-  indent = { enable = true },
+  indent = { enable = false },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -25,7 +25,6 @@ ts_configs.setup {
       ['i;'] = 'textsubjects-container-inner',
     },
   },
-  endwise = { enable = true },
 }
 
 -- require "nvim-treesitter.configs".setup {

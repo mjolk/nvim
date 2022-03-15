@@ -14,31 +14,31 @@ return require('packer').startup(function()
   use 'mhinz/vim-sayonara'
 
   -- Movement
-  use { 'chaoren/vim-wordmotion', 'justinmk/vim-sneak' }
+  --use { 'chaoren/vim-wordmotion', 'justinmk/vim-sneak' }
 
   -- Quickfix
-  use { 'Olical/vim-enmasse', cmd = 'EnMasse' }
+  -- use { 'Olical/vim-enmasse', cmd = 'EnMasse' }
   use 'kevinhwang91/nvim-bqf'
 
   -- Indentation tracking
   -- use 'lukas-reineke/indent-blankline.nvim'
 
-   -- use "lukas-reineke/lsp-format.nvim"
+  -- use "lukas-reineke/lsp-format.nvim"
 
   -- Wrapping/delimiters
   use {
-    'machakann/vim-sandwich',
-    { 'andymass/vim-matchup', setup = [[require('matchup')]], event = 'User ActuallyEditing' },
-  }
+  	'machakann/vim-sandwich',
+  	{ 'andymass/vim-matchup', setup = [[require('matchup')]], event = 'User ActuallyEditing' },
+   }
 
   -- Search
   use 'romainl/vim-cool'
 
   -- Prettification
-  use 'junegunn/vim-easy-align'
+  -- use 'junegunn/vim-easy-align'
 
   -- Text objects
-  use 'wellle/targets.vim'
+  -- use 'wellle/targets.vim'
 
   -- C++
   use 'p00f/clangd_extensions.nvim'
@@ -141,11 +141,11 @@ return require('packer').startup(function()
   -- Git
   use {
     { 'tpope/vim-fugitive', cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull' }, disable = true },
-    {
-      'lewis6991/gitsigns.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-      config = [[require('gitsigns_config')]],
-    },
+    --	{
+    --		'lewis6991/gitsigns.nvim',
+    --		requires = { 'nvim-lua/plenary.nvim' },
+    --		config = [[require('gitsigns_config')]],
+    --	},
     { 'TimUntersberger/neogit', cmd = 'Neogit', config = [[require('neogit_config')]] },
   }
 
@@ -171,14 +171,14 @@ return require('packer').startup(function()
 
   -- Endwise
   -- use 'tpope/vim-endwise'
-  use 'RRethy/nvim-treesitter-endwise'
+  -- use 'RRethy/nvim-treesitter-endwise'
 
   -- Buffer management
   use {
     'akinsho/bufferline.nvim',
     requires = 'kyazdani42/nvim-web-devicons',
     config = [[require('bufferline_setup')]],
-    -- event = 'User ActuallyEditing',
+    event = 'User ActuallyEditing',
   }
 
   use {

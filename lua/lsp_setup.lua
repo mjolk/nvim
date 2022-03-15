@@ -239,7 +239,9 @@ local servers = {
       local has_lsp, lspconfig = pcall(require, "lspconfig")
       if has_lsp then
         local util = lspconfig.util
-        return util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
+        local root = util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
+        print(root)
+        return root
       end
     end,
     flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
@@ -258,6 +260,7 @@ local servers = {
         usePlaceholders = true,
         experimentalPostfixCompletions = true,
         experimentalUseInvalidMetadata = true,
+        experimentalWorkspaceModule = true,
         hoverKind = "Structured",
         completeUnimported = true,
         staticcheck = true,

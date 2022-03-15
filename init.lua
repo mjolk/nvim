@@ -30,10 +30,11 @@ opt('lazyredraw', true)
 opt('showmatch', true)
 opt('ignorecase', true)
 opt('smartcase', true)
-opt('tabstop', 4, buffer)
-opt('softtabstop', 4, buffer)
--- opt('expandtab', false, buffer)
-opt('shiftwidth', 4, buffer)
+opt('tabstop', 2, buffer)
+opt('softtabstop', 2, buffer)
+opt('expandtab', true, buffer)
+opt('smarttab', true)
+opt('shiftwidth', 2, buffer)
 opt('number', true, window)
 -- opt('relativenumber', true, window)
 opt('smartindent', true, buffer)
@@ -62,6 +63,7 @@ opt('background', 'dark')
 -- cmd [[colorscheme gruvbox-material]]
 cmd [[colorscheme inkpot2]]
 
+cmd [[ doautocmd User ActuallyEditing ]]
 -- Keybindings
 local silent = { silent = true }
 -- Disable annoying F1 binding
@@ -70,8 +72,7 @@ map('', '<f1>', '<cmd>FloatermToggle<cr>')
 -- Yank to clipboard
 map({ 'n', 'v' }, 'y+', '<cmd>set opfunc=util#clipboard_yank<cr>g@', silent)
 
-vim.cmd [[ doautocmd User ActuallyEditing ]]
-
 require 'plugins'
+
 
 vim.lsp.set_log_level("debug")
