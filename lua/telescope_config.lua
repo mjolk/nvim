@@ -2,7 +2,7 @@ local telescope = require 'telescope'
 
 telescope.setup {
   defaults = {
-    layout_strategy = 'flex',
+    layout_strategy = 'horizontal',
     scroll_strategy = 'cycle',
   },
   extensions = {

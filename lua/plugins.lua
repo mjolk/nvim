@@ -27,9 +27,9 @@ return require('packer').startup(function()
 
   -- Wrapping/delimiters
   use {
-  	'machakann/vim-sandwich',
-  	{ 'andymass/vim-matchup', setup = [[require('matchup')]], event = 'User ActuallyEditing' },
-   }
+    'machakann/vim-sandwich',
+    { 'andymass/vim-matchup', setup = [[require('matchup')]], event = 'User ActuallyEditing' },
+  }
 
   -- Search
   use 'romainl/vim-cool'
@@ -55,13 +55,11 @@ return require('packer').startup(function()
     {
       'nvim-telescope/telescope.nvim',
       requires = {
-        'nvim-lua/popup.nvim',
         'nvim-lua/plenary.nvim',
         'telescope-frecency.nvim',
         'telescope-fzf-native.nvim',
       },
       wants = {
-        'popup.nvim',
         'plenary.nvim',
         'telescope-frecency.nvim',
         'telescope-fzf-native.nvim',
