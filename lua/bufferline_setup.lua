@@ -40,7 +40,6 @@ bufferline.setup {
   options = {
     always_show_bufferline = true,
     mode = 'buffers',
-    numbers = 'buffer_id',
     diagnostics = 'nvim_lsp',
     diagnostics_indicator = function(count, level, diagnostics_dict, context)
       local s = ' '
@@ -50,7 +49,7 @@ bufferline.setup {
       end
       return s
     end,
-    separator_style = "thick",
+    separator_style = "thin",
   },
   highlights = {
     background = colors.elem_inactive,

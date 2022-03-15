@@ -1,7 +1,11 @@
 local telescope = require 'telescope'
-
+print('telescope setup')
 telescope.setup {
   defaults = {
+    layout_config= {
+      horizontal = { width = 0.7 },
+      vertical = { width  = 0.7 },
+    },
     layout_strategy = 'horizontal',
     scroll_strategy = 'cycle',
   },
@@ -15,10 +19,10 @@ telescope.setup {
     },
   },
   pickers = {
-    lsp_references = { theme = 'dropdown' },
-    lsp_code_actions = { theme = 'dropdown' },
-    lsp_definitions = { theme = 'dropdown' },
-    lsp_implementations = { theme = 'dropdown' },
+    lsp_references = { theme = 'ivy' },
+    lsp_code_actions = { theme = 'ivy' },
+    lsp_definitions = { theme = 'ivy' },
+    lsp_implementations = { theme = 'ivy' },
     buffers = {
       sort_lastused = true,
       previewer = false,
