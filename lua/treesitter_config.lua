@@ -25,6 +25,7 @@ ts_configs.setup {
       ['i;'] = 'textsubjects-container-inner',
     },
   },
+  matchup = { enable = true }
 }
 
 -- require "nvim-treesitter.configs".setup {

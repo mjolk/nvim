@@ -1,5 +1,4 @@
 local telescope = require 'telescope'
-print('telescope setup')
 telescope.setup {
   defaults = {
     layout_config= {

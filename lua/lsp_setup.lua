@@ -105,7 +105,7 @@ local function on_attach(client)
   end
 
   cmd 'au CursorHold,CursorHoldI <buffer> lua require"nvim-lightbulb".update_lightbulb {sign = {enabled = false}, virtual_text = {enabled = true, text = ""}, float = {enabled = false, text = "", win_opts = {winblend = 100, anchor = "NE"}}}'
-  cmd 'au CursorHold,CursorHoldI <buffer> lua vim.diagnostic.open_float(0, { scope = "line" })'
+  -- cmd 'au CursorHold,CursorHoldI <buffer> lua vim.diagnostic.open_float(0, { scope = "line" })'
   cmd 'augroup END'
 end
 
@@ -240,7 +240,6 @@ local servers = {
       if has_lsp then
         local util = lspconfig.util
         local root = util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
-        print(root)
         return root
       end
     end,
@@ -327,12 +326,6 @@ local servers = {
     lsp_status.capabilities
     )
 
-    for index, data in ipairs(config.capabilities) do
-      print(index)
-      for key, value in pairs(data) do
-        print('\t', key, value)
-      end
-    end
 
     lspconfig[server].setup(config)
   end
